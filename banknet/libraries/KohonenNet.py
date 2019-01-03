@@ -1,6 +1,7 @@
 from .Vector import *
 from .Matrix import *
 from .Euclid import *
+from .Mahalanobis import *
 from copy import deepcopy
 
 class KohonenNet(Vector, Matrix, Euclid):
@@ -78,3 +79,17 @@ class KohonenNet(Vector, Matrix, Euclid):
             divider = sqrt(divider)
             for i in range(lengthColumn):
                 weight[i][index] = (weight[i][index] / temp + self.ratio * self.normalize(self.column(points, j))[i]) / divider
+
+    def byMahalanobis(self, points, weight):
+        lengthRow = len(points[0])
+        lengthColumn = len(self.column(weight, 0))
+        for j in range(lengthRow):
+            temp, index = 0, 0
+            minimum = self.distance([a_i-b_i for a_i, b_i in zip(self.column(points, j), self.column(weight, index))])
+            for i in range(lengthColumn):
+                temp = self.distance([a_i-b_i for a_i, b_i in zip(self.column(points, j), self.column(weight, i))])
+                if temp < minimum:
+                    minimum = temp
+                    index = i
+            for i in range(lengthColumn):
+                weight[index][i] = weight[index][i] + self.ratio * (points[i][j]-weight[index][i])

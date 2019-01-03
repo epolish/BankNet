@@ -55,6 +55,8 @@ class Method():
                         distance.append(solver.distance([a_i-b_i for a_i, b_i in zip(points[index], claster)]))
                     elif Method.__method == 'byAngle':
                         distance.append(solver.angle(points[index], claster))
+                    elif Method.__method == 'byMahalanobis':
+                        distance.append(solver.distance([a_i-b_i for a_i, b_i in zip(points[index], claster)]))
                     else:
                         break
                 rating.rating = Method.__statuses[distance.index(min(distance))]
